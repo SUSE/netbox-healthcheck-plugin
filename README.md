@@ -8,7 +8,7 @@ A [NetBox](https://github.com/netbox-community/netbox) plugin that provides comp
 
 ## Features
 
-This plugin integrates [django-health-check](https://github.com/revsys/django-health-check) with NetBox to provide health monitoring of critical services:
+This plugin integrates [django-health-check](https://github.com/codingjoe/django-health-check) with NetBox to provide health monitoring of critical services:
 
 - **Database** - PostgreSQL connectivity and operations
 - **Cache** - Django cache framework (Redis-backed)
@@ -39,7 +39,8 @@ Restart NetBox and visit: `https://your-netbox/plugins/netbox_healthcheck_plugin
 
 | NetBox Version | Plugin Version | Python Version    |
 |----------------|----------------|-------------------|
-| 4.5+           | 0.3.0          | 3.12, 3.13, 3.14 |
+| 4.5 - 4.7      | 0.4.0          | 3.12, 3.13, 3.14 |
+| 4.5 - 4.6      | 0.3.0          | 3.12, 3.13, 3.14 |
 | 4.0 - 4.4      | 0.2.0          | 3.10, 3.11, 3.12 |
 | 3.4 - 3.7      | 0.1.x          | 3.10, 3.11, 3.12 |
 
@@ -54,7 +55,7 @@ PLUGINS_CONFIG = {
     "netbox_healthcheck_plugin": {
         "checks": [
             "health_check.Database",
-            "health_check.cache.backends.CacheBackend",
+            "health_check.Cache",
             "netbox_healthcheck_plugin.backends.redis.NetBoxRedisCacheHealthCheck",
             "netbox_healthcheck_plugin.backends.redis.NetBoxRedisTasksHealthCheck",
         ]
@@ -68,31 +69,23 @@ You can add custom health checks or disable specific checks. See the [Configurat
 
 Full documentation is available at: https://netbox-community.github.io/netbox-healthcheck-plugin/
 
-- [Installation Guide](https://netbox-community.github.io/netbox-healthcheck-plugin/installation/)
+- [Quickstart](https://netbox-community.github.io/netbox-healthcheck-plugin/quickstart/)
 - [Configuration Options](https://netbox-community.github.io/netbox-healthcheck-plugin/configuration/)
-- [Contributing Guidelines](https://netbox-community.github.io/netbox-healthcheck-plugin/contributing/)
-- [Changelog](https://netbox-community.github.io/netbox-healthcheck-plugin/changelog/)
+- [Contributing Guidelines](https://netbox-community.github.io/netbox-healthcheck-plugin/development/contributing/)
+- [Releases](https://netbox-community.github.io/netbox-healthcheck-plugin/releases/)
 
 ## Development
 
-This plugin uses [Ruff](https://docs.astral.sh/ruff/) for linting and formatting:
+Tests run inside a NetBox checkout using NetBox's test runner, with this repo's
+`testing/configuration.py` (see [AGENTS.md](AGENTS.md) for the full setup):
 
 ```bash
-# Install development dependencies
-pip install -e ".[test,docs]"
+pip install -e '.[dev,test]'
+export NETBOX_CONFIGURATION=configuration PYTHONPATH="$PWD/testing"
+python /path/to/netbox/netbox/manage.py test netbox_healthcheck_plugin.tests
 
-# Run linting and formatting
-ruff check .
-ruff format .
-
-# Run tests
-pytest
-
-# Install pre-commit hooks
-pre-commit install
-
-# Build documentation
-mkdocs serve
+pre-commit install           # lint/format hooks (ruff, djlint, codespell, yamllint)
+pre-commit run --all-files
 ```
 
 ## Support

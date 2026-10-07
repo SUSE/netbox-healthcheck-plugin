@@ -1,4 +1,4 @@
-# Installation
+# Quickstart
 
 This guide covers how to install the NetBox HealthCheck Plugin in various NetBox environments.
 
@@ -116,7 +116,7 @@ If you see import errors:
 
 1. Check that all dependencies are installed:
    ```bash
-   pip install django-health-check>=3.23.0 redis>=4.0
+   pip install "django-health-check>=4.6,<5" redis>=4.0
    ```
 
 2. Verify your NetBox version meets the minimum requirement (>= 4.5.0)
@@ -134,4 +134,4 @@ For more configuration options, see the [Configuration](configuration.md) guide.
 ## Next Steps
 
 - [Configuration Options](configuration.md) - Customize which health checks run
-- [Contributing](contributing.md) - Help improve the plugin
+- [Contributing](development/contributing.md) - Help improve the plugin
